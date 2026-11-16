@@ -1,0 +1,47 @@
+# Intrinsic Motivation Count-Based Exploration Baseline on PutNear-8x8-N3
+experiment:
+  name: "putnear_intrinsic_ppo"
+  seed: 42
+  device: "auto"
+
+agent:
+  type: "intrinsic_ppo"
+
+environment:
+  env_id: "MiniGrid-PutNear-8x8-N3-v0"
+  max_episode_steps: 100
+  render_mode: "rgb_array"
+
+policy:
+  is_multimodal: true
+  policy_type: "MultiInputPolicy"
+  extractor: "slot"
+  features_dim: 128
+
+intrinsic_motivation:
+  beta: 0.05
+  count_type: "state_action"
+
+rl_training:
+  total_timesteps: 2000000
+  learning_rate: 3.0e-4
+  min_learning_rate: 1.0e-4
+  lr_schedule: "linear"
+  gamma: 0.999
+  n_steps: 2048
+  batch_size: 256
+  n_epochs: 10
+  clip_range: 0.2
+  ent_coef: 0.03
+  features_dim: 128
+  log_dir: "./logs/putnear_intrinsic_ppo"
+  save_model_path: "./models/putnear_intrinsic_agent"
+
+evaluation:
+  model_path: "./models/putnear_intrinsic_agent"
+  num_eval_episodes: 20
+  num_behavior_analysis_episodes: 100
+  num_trajectory_plots: 5
+  num_heatmap_simulations: 100
+  output_dir: "./eval_results/putnear_intrinsic_ppo"
+

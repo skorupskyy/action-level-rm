@@ -1,0 +1,40 @@
+# Intrinsic Motivation PPO (Count-Based Novelty Reward)
+experiment:
+  name: "intrinsic_ppo_doorkey"
+  seed: 42
+  device: "auto"
+
+agent:
+  type: "intrinsic_ppo"
+
+environment:
+  env_id: "MiniGrid-DoorKey-8x8-v0"
+  max_episode_steps: 200
+  render_mode: "rgb_array"
+
+intrinsic_motivation:
+  beta: 0.05
+  count_type: "state_action"        # "state_action" or "state_only"
+
+rl_training:
+  total_timesteps: 1000000
+  learning_rate: 3.0e-4
+  min_learning_rate: 1.0e-4
+  lr_schedule: "linear"
+  gamma: 0.999
+  n_steps: 2048
+  batch_size: 256
+  n_epochs: 10
+  clip_range: 0.2
+  ent_coef: 0.05
+  features_dim: 128
+  log_dir: "./logs/intrinsic_ppo"
+  save_model_path: "./models/intrinsic_agent_doorkey"
+
+evaluation:
+  model_path: "./models/intrinsic_agent_doorkey"
+  num_eval_episodes: 10
+  num_behavior_analysis_episodes: 50
+  num_trajectory_plots: 5
+  num_heatmap_simulations: 100
+  output_dir: "./eval_results/intrinsic_ppo"
